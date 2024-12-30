@@ -1,9 +1,6 @@
--- Settable parameters
 local parryDistance = 0.55
 local parrySpeed = 20
 
-
--- Update functions
 local function SetParryDistance(value)
     parryDistance = value
     print("Parry Distance set to: " .. value)
@@ -14,9 +11,6 @@ local function SetParrySpeed(value)
     print("Parry Speed set to: " .. value)
 end
 
-
-
--- Existing Ball Parry Logic
 local RunService = game:GetService("RunService") or game:FindFirstDescendant("RunService")
 local Players = game:GetService("Players") or game:FindFirstDescendant("Players")
 local VirtualInputManager = game:GetService("VirtualInputManager") or game:FindFirstDescendant("VirtualInputManager")
@@ -26,7 +20,6 @@ local Cooldown = tick()
 local Parried = false
 local Connection = nil
 
--- Function to get the ball
 local function GetBall()
     for _, Ball in ipairs(workspace.Balls:GetChildren()) do
         if Ball:GetAttribute("realBall") then
@@ -35,7 +28,6 @@ local function GetBall()
     end
 end
 
--- Function to reset the connection
 local function ResetConnection()
     if Connection then
         Connection:Disconnect()
@@ -43,7 +35,6 @@ local function ResetConnection()
     end
 end
 
--- Reset Parried status on target change
 workspace.Balls.ChildAdded:Connect(function()
     local Ball = GetBall()
     if not Ball then return end
@@ -53,7 +44,6 @@ workspace.Balls.ChildAdded:Connect(function()
     end)
 end)
 
--- Main loop (Update every frame)
 RunService.PreSimulation:Connect(function()
     local Ball, HRP = GetBall(), Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
     if not Ball or not HRP then
@@ -63,7 +53,6 @@ RunService.PreSimulation:Connect(function()
     local Speed = Ball.zoomies.VectorVelocity.Magnitude
     local Distance = (HRP.Position - Ball.Position).Magnitude
 
-    -- Use the dynamic parameters for parry logic
     if Ball:GetAttribute("target") == Player.Name and not Parried and Distance / Speed <= parryDistance then
         VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 0)
         Parried = true
@@ -75,7 +64,6 @@ RunService.PreSimulation:Connect(function()
     end
 end)
 
--- Expose functions to the main script to dynamically update parameters
 return {
     SetParryDistance = SetParryDistance,
     SetParrySpeed = SetParrySpeed,

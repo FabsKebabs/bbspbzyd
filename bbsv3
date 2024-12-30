@@ -1,7 +1,7 @@
 -- Settable parameters
 local parryDistance = 0.55
-local parrySpeed = 10
-local parryCooldown = 1
+local parrySpeed = 20
+
 
 -- Update functions
 local function SetParryDistance(value)
@@ -14,10 +14,7 @@ local function SetParrySpeed(value)
     print("Parry Speed set to: " .. value)
 end
 
-local function SetParryCooldown(value)
-    parryCooldown = value
-    print("Cooldown Time set to: " .. value)
-end
+
 
 -- Existing Ball Parry Logic
 local RunService = game:GetService("RunService") or game:FindFirstDescendant("RunService")
